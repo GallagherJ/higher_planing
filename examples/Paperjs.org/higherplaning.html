@@ -70,6 +70,8 @@ minus = 1;
             path.scale(scale);
         }
 
+       
+
   //  var canyo  = document.getElementById("canvas");
    // var context = canyo.getContext("2d");
 
@@ -80,6 +82,53 @@ minus = 1;
    // var ctx=c.getContext("2d");
 
     //anvas.clearRect(20,20,100,50);
+}
+
+
+ function drawemHexagon(amount){
+
+     project.activeLayer.removeChildren();
+     console.log('left');
+
+     // Create a Paper.js Path to draw a line into it:
+var hexagon = new Path();
+// Color our path black
+hexagon.fillColor = 'black';
+
+// How many points do we want our object to have
+var points = 6;
+// How large should it be
+var radius = 60;
+// 0 to 2PI is a circle, so divide that by the number of points
+// in our object and that's how many radians we should put a new
+// point in order to draw the shape
+var angle = ((2 * Math.PI) / points);
+
+// For as many vertices in the shape, add a point
+for(i = 0; i <= points; i++) {
+
+  // Add a new point to the object
+  hexagon.add(new Point(
+    // Radius * Math.cos(number of radians of the point) is the x position
+    radius * Math.cos(angle * i), 
+    // And the same thing with Math.sin for the y position of the point
+    radius * Math.sin(angle * i)
+  ));
+}
+
+// Offset the shape so it's fully displayed on the canvas
+hexagon.position.x += 200;
+hexagon.position.y += 200;
+
+for (var i = 0; i < amount; i++) {
+
+var hex2 = hexagon.clone();
+hex2.fillColor = colors[i % 4];
+var scale = (1 - i / amount) * 20;
+          //  hex2.scale(scale);
+
+}
+
 }
     /* 
     
@@ -184,7 +233,8 @@ function checkKey(e) {
         
     }
     else if (e.keyCode == '37') {
-       // left arrow
+       drawemHexagon(2);
+       //left arrow
     }
     else if (e.keyCode == '39') {
        // right arrow
@@ -195,20 +245,91 @@ function checkKey(e) {
 //end keypress
 //
 //
+// modify paths start 
 
 
 
 
-        var children = project.activeLayer.children;
+// The amount of segment points we want to create:
+var amount = 1;
+
+// The maximum height of the wave:
+var height = 60;
+
+// Create a new path and style it:
+/*var path = new Path({
+    // 80% black:
+    strokeColor: [0.8],
+    strokeWidth: 30,
+    strokeCap: 'square'
+});
+*/
+
+/*edit paths start
+
+// Add 5 segment points to the path spread out
+// over the width of the view:
+for (var i = 0; i <= amount; i++) {
+    path.insert(new Point(i / amount, 1) * view.size);
+}
+
+// Select the path, so we can see how it is constructed:
+path.selected = true;
+
+function onFrame(event) {
+    // Loop through the segments of the path:
+    for (var i = 0; i <= amount; i++) {
+        var segment = path.segments[i];
+
+        // A cylic value between -1 and 1
+        var sinus = Math.sin(event.time * 3 + i);
+        
+        // Change the y position of the segment point:
+        segment.point.x = sinus * height + 2;
+    }
+    // Uncomment the following line and run the script again
+    // to smooth the path:
+    // path.smooth();
+}
+
+
+
+
+
+
+
+ //modify paths end */
+ //
+ //
+ //cool rotate circle thing
+ //
+ /*
+var clones = 30;
+var angle = 360 / clones;
+
+for(var i = 0; i < clones; i++) {
+    var clonedPath = circlePath.clone();
+    clonedPath.rotate(angle * i, circlePath.bounds.topLeft);
+}; */
+ 
+
+var amand = 5;
+var height = 60;
+
+      var children = project.activeLayer.children;
         function onFrame(event) {
             for (var i = 0, l = children.length; i < l; i++) {
                 var item = children[i];
                 var delta = (mousePoint - item.position) / (i + 5);
-                item.rotate(Math.sin((event.count + i) / 10) * rate);
+                item.rotate(Math.sin((event.count + i) / 10) * rate);              
+               //cool colour change thing, incorporate into diff. function.
+               //item.fillColor.hue += 7;
                 if (delta.length > 0.1)
                     item.position += delta;
             }
-        }
+
+                        
+        } 
 
         Tone.Buffer.onload = function(){
     player.start();
