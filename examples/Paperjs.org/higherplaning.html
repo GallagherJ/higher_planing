@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Higher Planing</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="Tone.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="../../dist/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+
+        var mousePoint = view.center;
+        var amount = 25;
+        var color1 = 'purple'
+        var color2 = 'white'
+        var color3 = 'orange'
+        var color4 = 'white'
+        var colors = [color1, color2, color3, color4];
+        var rate = 2;
+
+
+
+//start tone audio control
+var player = new Tone.Player({
+    "url" : "chan1_cut.wav",
+    "loop" : true,
+"reverse" : true
+}).toMaster();
+
+var playdat = new Tone.Player({
+    "url" : "obscurium_modulatron.wav",
+    "loop" : true,
+"reverse" : false,
+"loopStart":0.4,
+"loopEnd":2.4
+}).toMaster();
+
+var feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toMaster();
+var dist = new Tone.PingPongDelay("4n", 0.2).toMaster();
+
+
+var minus = player.volume.value;
+minus = 1;
+
+/*        var background = new Shape.Rectangle({
+    rectangle: view.bounds,
+    fillColor: { hue: 180, saturation: 1, brightness: 1 }
+});*/
+
+        for (var i = 0; i < amount; i++) {
+            var rect = new Rectangle([0, 0], [25, 25]);
+            rect.center = mousePoint;
+            var path = new Path.Rectangle(rect, 6);
+            path.fillColor = colors[i % 4];
+            var scale = (1 - i / amount) * 20;
+            path.scale(scale);
+        }
+
+ function drawemAgain(amount){
+
+     project.activeLayer.removeChildren();
+     console.log('up');
+
+      for (var i = 0; i < amount; i++) {
+            var rect = new Rectangle([0, 0], [amount, amount]);
+            rect.center = mousePoint;
+            var path = new Path.Rectangle(rect, 6);
+            path.fillColor = colors[i % 4];
+            var scale = (1 - i / amount) * 20;
+            path.scale(scale);
+        }
+
+  //  var canyo  = document.getElementById("canvas");
+   // var context = canyo.getContext("2d");
+
+  //   context.clearRect(0, 0, canvas.width, canvas.height);
+
+ //   var c=document.getElementById("canvas");
+
+   // var ctx=c.getContext("2d");
+
+    //anvas.clearRect(20,20,100,50);
+}
+    /* 
+    
+             for (var i = 0; i < amount; i++) {
+            var rect1 = new Rectangle([0, 0], [amount, amount]);
+            rect1.center = mousePoint;
+            var path1 = new Path.Rectangle(rect1, 6);
+            path1.fillColor = colors[i % 4];
+            var scale1 = (1 - i / amount) * 20;
+            path1.scale1(scale1);
+        }
+ 
+   function  drawemBack(amount){
+
+            for (var i = 0; i < amount; i++) {
+            var rect2 = new Rectangle([0, 0], [25, 25]);
+            rect2.center = mousePoint;
+            var path2 = new Path.Rectangle(rect, 6);
+            path2.fillColor = colors[i % 4];
+            var scale2 = (1 - i / amount) * 20;
+            path2.scale2(scale2);
+        }
+
+
+
+
+        }*/
+
+        function onMouseMove(event) {
+            mousePoint = event.point;
+        }
+
+
+
+
+     
+//changing rate of spin
+            document.getElementById ("mybody").addEventListener ("click", changeRate);
+            
+
+
+        function changeRate(){
+
+            rate=9;
+            console.log("2derp");
+            player.connect(feedbackDelay);
+            playdat.connect(dist);
+            feedbackDelay.toMaster();
+            dist.toMaster();
+            
+        document.getElementById ("mybody").removeEventListener ("click", changeRate);
+        document.getElementById ("mybody").addEventListener ("click", slowRate);
+        
+            
+
+        }
+
+         function slowRate(){
+            rate=2;
+            feedbackDelay.disconnect();
+            dist.disconnect();
+
+
+             document.getElementById ("mybody").removeEventListener ("click", slowRate);
+            document.getElementById ("mybody").addEventListener ("click", changeRate);
+       
+            console.log("3derp");
+         }
+
+         //end change spin rate
+         
+
+
+        document.onkeydown = checkKey;
+
+
+//keypress
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+        // 
+       colors = ['blue', 'cyan', 'blue', 'white'];
+        drawemAgain(15);
+        player.stop();
+        playdat.start();
+        rate = 2;
+       // context.clearRect(0, 0, canvas.width, canvas.height);
+      
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+        colors = ['purple', 'white', 'orange', 'white'];
+        drawemAgain(25);
+         
+        console.log('down');
+        playdat.stop();
+        player.start();
+         rate = 2;
+        
+    }
+    else if (e.keyCode == '37') {
+       // left arrow
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+    }
+
+}
+
+//end keypress
+//
+//
+
+
+
+
+        var children = project.activeLayer.children;
+        function onFrame(event) {
+            for (var i = 0, l = children.length; i < l; i++) {
+                var item = children[i];
+                var delta = (mousePoint - item.position) / (i + 5);
+                item.rotate(Math.sin((event.count + i) / 10) * rate);
+                if (delta.length > 0.1)
+                    item.position += delta;
+            }
+        }
+
+        Tone.Buffer.onload = function(){
+    player.start();
+}
+    </script>
+</head>
+<body id='mybody'>
+    <canvas id="canvas" resize hidpi="off"></canvas>
+</body>
+</html>
