@@ -4,6 +4,7 @@ body {
     overflow: hidden;
     height: 100%;
 }
+* {cursor: none;}
 
 /* Scale canvas with resize attribute to full size */
 canvas[resize] {

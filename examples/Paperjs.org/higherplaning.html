@@ -21,6 +21,8 @@
         var turn = true;
         var radial = false;
         var children = project.activeLayer.children;
+        var freakout = false;
+        var clickBlue= false;
         
 
 
@@ -211,7 +213,7 @@ function drawemRadius(amount){
             dist.toMaster();
 
              if(hextime==true){
-                rate=18;
+                rate=19;
 
             }
             
@@ -254,7 +256,8 @@ function checkKey(e) {
         player.stop();
         playdat.start();
         rate = 2;
-        turn=true;
+        turn=false;
+        freakout=false;
         
        
        // context.clearRect(0, 0, canvas.width, canvas.height);
@@ -270,22 +273,26 @@ function checkKey(e) {
         player.start();
          rate = 2;
           turn=true;
+           freakout=false;
         
     }
     else if (e.keyCode == '37') {
        drawemHexagon(200);
         turn=true;
+         freakout=false;
        //left arrow
     }
     else if (e.keyCode == '39') {
        // right arrow
        // 
        colors = ['blue', 'cyan', 'blue', 'white'];
-        drawemRadius(15);
+        drawemHexagon(200);
         player.stop();
         playdat.start();
         rate = 2;
-        turn=false;
+        turn=true;
+        freakout=true;
+
         
     }
 
@@ -396,17 +403,23 @@ var height = 60;
                //
                if(hextime==true){
 
-    function rollDice() {
+    
+ 
+                item.fillColor.hue += 3;
+                item.rotate(Math.sin((event.count + i) / 10) * rate);
+               //item.scale(1.001);
+
+            }
+
+            if(freakout==true){
+                 function rollDice() {
     children.sort(function(){
         return Math.random() - 0.5;
     });
 }
 rollDice();
- 
-                item.fillColor.hue += 3;
+item.fillColor.hue += 3;
                 item.rotate(Math.random((event.count + i) / 10) * rate);
-               //item.scale(1.001);
-
             }
                 if (delta.length > 0.1)
                     item.position += delta;
