@@ -17,6 +17,11 @@
         var color4 = 'white'
         var colors = [color1, color2, color3, color4];
         var rate = 2;
+        var hextime = false;
+        var turn = true;
+        var radial = false;
+        var children = project.activeLayer.children;
+        
 
 
 
@@ -60,6 +65,7 @@ minus = 1;
 
      project.activeLayer.removeChildren();
      console.log('up');
+     hextime = false;
 
       for (var i = 0; i < amount; i++) {
             var rect = new Rectangle([0, 0], [amount, amount]);
@@ -69,6 +75,10 @@ minus = 1;
             var scale = (1 - i / amount) * 20;
             path.scale(scale);
         }
+
+ 
+
+
 
        
 
@@ -89,11 +99,12 @@ minus = 1;
 
      project.activeLayer.removeChildren();
      console.log('left');
+     hextime = true;
 
      // Create a Paper.js Path to draw a line into it:
 var hexagon = new Path();
 // Color our path black
-hexagon.fillColor = 'black';
+hexagon.fillColor = 'white';
 
 // How many points do we want our object to have
 var points = 6;
@@ -130,6 +141,26 @@ var scale = (1 - i / amount) * 20;
 }
 
 }
+
+
+
+function drawemRadius(amount){
+
+     project.activeLayer.removeChildren();
+     console.log('right');
+     hextime = false;
+
+     var radius = Math.max(view.size.width, view.size.height) * 0.75;
+
+      for (var i = 0; i < amount; i++) {
+            var rect = new Rectangle([0, 0], [amount, amount]);
+            rect.center = mousePoint;
+            var path = new Path.Rectangle(rect, 6);
+            path.fillColor = colors[i % 4];
+            var scale = (1 - i / amount) * 20;
+            path.scale(scale);
+        }
+    }
     /* 
     
              for (var i = 0; i < amount; i++) {
@@ -178,6 +209,11 @@ var scale = (1 - i / amount) * 20;
             playdat.connect(dist);
             feedbackDelay.toMaster();
             dist.toMaster();
+
+             if(hextime==true){
+                rate=18;
+
+            }
             
         document.getElementById ("mybody").removeEventListener ("click", changeRate);
         document.getElementById ("mybody").addEventListener ("click", slowRate);
@@ -218,6 +254,9 @@ function checkKey(e) {
         player.stop();
         playdat.start();
         rate = 2;
+        turn=true;
+        
+       
        // context.clearRect(0, 0, canvas.width, canvas.height);
       
     }
@@ -230,14 +269,24 @@ function checkKey(e) {
         playdat.stop();
         player.start();
          rate = 2;
+          turn=true;
         
     }
     else if (e.keyCode == '37') {
-       drawemHexagon(2);
+       drawemHexagon(200);
+        turn=true;
        //left arrow
     }
     else if (e.keyCode == '39') {
        // right arrow
+       // 
+       colors = ['blue', 'cyan', 'blue', 'white'];
+        drawemRadius(15);
+        player.stop();
+        playdat.start();
+        rate = 2;
+        turn=false;
+        
     }
 
 }
@@ -316,23 +365,62 @@ for(var i = 0; i < clones; i++) {
 var amand = 5;
 var height = 60;
 
-      var children = project.activeLayer.children;
+      
         function onFrame(event) {
             for (var i = 0, l = children.length; i < l; i++) {
                 var item = children[i];
                 var delta = (mousePoint - item.position) / (i + 5);
-                item.rotate(Math.sin((event.count + i) / 10) * rate);              
+
+                if(turn===true){
+                item.rotate(Math.sin((event.count + i) / 10) * rate);}  
+
+
+        /*        if(radial===true){
+                    for (var i = 0, l = gradient.stops.length; i < l; i++)
+        gradient.stops[i].color.hue -= 20;
+    if (grow && vector.length > 300) {
+        grow = false;
+    } else if (!grow && vector.length < 75) {
+        grow = true;
+    }
+    if (mouseDown) {
+        point = point + (mousePoint - point) / 10;
+    } else {
+        vector.length += (grow ? 1 : -1);
+        vector.angle += 5;
+    }
+    color.highlight = mouseDown ? point : point + vector;
+
+                }  */          
                //cool colour change thing, incorporate into diff. function.
-               //item.fillColor.hue += 7;
+               //
+               if(hextime==true){
+
+    function rollDice() {
+    children.sort(function(){
+        return Math.random() - 0.5;
+    });
+}
+rollDice();
+ 
+                item.fillColor.hue += 3;
+                item.rotate(Math.random((event.count + i) / 10) * rate);
+               //item.scale(1.001);
+
+            }
                 if (delta.length > 0.1)
                     item.position += delta;
             }
 
+
                         
         } 
 
+
+
         Tone.Buffer.onload = function(){
     player.start();
+    
 }
     </script>
 </head>
