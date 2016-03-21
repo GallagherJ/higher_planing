@@ -77,12 +77,7 @@ minus = 1;
             var scale = (1 - i / amount) * 20;
             path.scale(scale);
         }
-
  
-
-
-
-       
 
   //  var canyo  = document.getElementById("canvas");
    // var context = canyo.getContext("2d");
@@ -216,6 +211,14 @@ function drawemRadius(amount){
                 rate=19;
 
             }
+
+            if(clickBlue==true){
+                for (var i = 0, l = children.length; i < l; i++) {
+                var item = children[i];
+                item.scale(2);
+            }
+
+            }
             
         document.getElementById ("mybody").removeEventListener ("click", changeRate);
         document.getElementById ("mybody").addEventListener ("click", slowRate);
@@ -232,6 +235,22 @@ function drawemRadius(amount){
 
              document.getElementById ("mybody").removeEventListener ("click", slowRate);
             document.getElementById ("mybody").addEventListener ("click", changeRate);
+
+
+
+              if(clickBlue==true){
+
+                
+
+                for (var i = 0, l = children.length; i < l; i++) {
+                var item = children[i];
+
+                item.scale(0.5);
+            
+                 
+            }
+
+            }
        
             console.log("3derp");
          }
@@ -258,6 +277,7 @@ function checkKey(e) {
         rate = 2;
         turn=false;
         freakout=false;
+        clickBlue=true;
         
        
        // context.clearRect(0, 0, canvas.width, canvas.height);
@@ -274,12 +294,14 @@ function checkKey(e) {
          rate = 2;
           turn=true;
            freakout=false;
+            clickBlue=false;
         
     }
     else if (e.keyCode == '37') {
        drawemHexagon(200);
         turn=true;
          freakout=false;
+          clickBlue=false;
        //left arrow
     }
     else if (e.keyCode == '39') {
@@ -292,6 +314,7 @@ function checkKey(e) {
         rate = 2;
         turn=true;
         freakout=true;
+         clickBlue=false;
 
         
     }
