@@ -23,6 +23,7 @@
         var children = project.activeLayer.children;
         var freakout = false;
         var clickBlue= false;
+        var eyetime=false;
         
 
 
@@ -42,12 +43,29 @@ var playdat = new Tone.Player({
 "loopEnd":2.4
 }).toMaster();
 
+var cello = new Tone.Player({
+    "url" : "cello.mp3",
+    "loop" : true,
+"reverse" : true,
+"loopStart":0.379,
+"loopEnd":10.39,
+"playbackRate":2
+
+}).toMaster();
+
 var feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toMaster();
-var dist = new Tone.PingPongDelay("4n", 0.2).toMaster();
+var dist = new Tone.PitchShift(0.5,0.1,0,0.6).toMaster();
+//var pulse = new Tone.PulseOscillator("E5", 0.4).toMaster().start();
 
 
 var minus = player.volume.value;
 minus = 1;
+
+var playdatvol= playdat.volume.value;
+playdatvol= 1;
+
+var cellovol = cello.volume.value;
+cellovol= -20;
 
 /*        var background = new Shape.Rectangle({
     rectangle: view.bounds,
@@ -181,8 +199,6 @@ function drawemRadius(amount){
         }
 
 
-
-
         }*/
 
         function onMouseMove(event) {
@@ -212,10 +228,17 @@ function drawemRadius(amount){
 
             }
 
+              if(leftTime==true){
+                cello.playbackRate = 6;
+                cello.reverse=false;
+
+            }
+
             if(clickBlue==true){
                 for (var i = 0, l = children.length; i < l; i++) {
                 var item = children[i];
                 item.scale(2);
+                eyetime=true;
             }
 
             }
@@ -236,6 +259,13 @@ function drawemRadius(amount){
              document.getElementById ("mybody").removeEventListener ("click", slowRate);
             document.getElementById ("mybody").addEventListener ("click", changeRate);
 
+              if(leftTime==true){
+                cello.playbackRate = 2;
+                cello.reverse=true;
+
+
+            }
+
 
 
               if(clickBlue==true){
@@ -246,6 +276,7 @@ function drawemRadius(amount){
                 var item = children[i];
 
                 item.scale(0.5);
+                eyetime=false;
             
                  
             }
@@ -273,11 +304,18 @@ function checkKey(e) {
        colors = ['blue', 'cyan', 'blue', 'white'];
         drawemAgain(15);
         player.stop();
+        minus = 0;
         playdat.start();
         rate = 2;
         turn=false;
         freakout=false;
         clickBlue=true;
+        eyetime=false;
+        downTime=false;
+        leftTime=false;
+         rightTime=false;
+            slowRate();
+            cello.stop();
         
        
        // context.clearRect(0, 0, canvas.width, canvas.height);
@@ -290,11 +328,19 @@ function checkKey(e) {
          
         console.log('down');
         playdat.stop();
+        playdatvol=0;
+    
         player.start();
          rate = 2;
           turn=true;
            freakout=false;
             clickBlue=false;
+            eyetime=false;
+            downTime=true;
+            leftTime=false;
+             rightTime=false;
+             slowRate();
+             cello.stop();
         
     }
     else if (e.keyCode == '37') {
@@ -302,6 +348,16 @@ function checkKey(e) {
         turn=true;
          freakout=false;
           clickBlue=false;
+          eyetime=false;
+          downTime=false;
+          leftTime=true;
+           rightTime=false;
+              playdat.stop();
+                player.stop();
+            cello.start();
+
+
+        
        //left arrow
     }
     else if (e.keyCode == '39') {
@@ -314,7 +370,13 @@ function checkKey(e) {
         rate = 2;
         turn=true;
         freakout=true;
+        eyetime=false;
          clickBlue=false;
+         downTime=false;
+         leftTime=false;
+         rightTime=true;
+         cello.stop();
+
 
         
     }
@@ -424,11 +486,19 @@ var height = 60;
                 }  */          
                //cool colour change thing, incorporate into diff. function.
                //
+               //
+               //
+               if(eyetime==true){
+
+                item.fillColor.hue += 7;
+
+
+               }
                if(hextime==true){
 
     
  
-                item.fillColor.hue += 3;
+                item.fillColor.hue += 7;
                 item.rotate(Math.sin((event.count + i) / 10) * rate);
                //item.scale(1.001);
 
@@ -456,6 +526,8 @@ item.fillColor.hue += 3;
 
         Tone.Buffer.onload = function(){
     player.start();
+    //playdat.start();
+    //cello.start();
     
 }
     </script>
