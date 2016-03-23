@@ -24,6 +24,9 @@
         var freakout = false;
         var clickBlue= false;
         var eyetime=false;
+        var leftime=false;
+        var downTime=false;         
+        var rightTime=false;
         
 
 
@@ -51,6 +54,18 @@ var cello = new Tone.Player({
 "loopEnd":10.39,
 "playbackRate":2
 
+
+}).toMaster();
+
+var rain = new Tone.Player({
+    "url" : "rain.mp3",
+    "loop" : true,
+"reverse" : true,
+"loopStart":0.379,
+"loopEnd":10.39,
+"playbackRate":1
+
+
 }).toMaster();
 
 var feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toMaster();
@@ -66,6 +81,9 @@ playdatvol= 1;
 
 var cellovol = cello.volume.value;
 cellovol= -20;
+
+var rainvol =rain.volume.value;
+rainvol = -20;
 
 /*        var background = new Shape.Rectangle({
     rectangle: view.bounds,
@@ -316,6 +334,7 @@ function checkKey(e) {
          rightTime=false;
             slowRate();
             cello.stop();
+             rain.stop();
         
        
        // context.clearRect(0, 0, canvas.width, canvas.height);
@@ -341,6 +360,7 @@ function checkKey(e) {
              rightTime=false;
              slowRate();
              cello.stop();
+              rain.stop();
         
     }
     else if (e.keyCode == '37') {
@@ -355,6 +375,7 @@ function checkKey(e) {
               playdat.stop();
                 player.stop();
             cello.start();
+             rain.stop();
 
 
         
@@ -366,7 +387,7 @@ function checkKey(e) {
        colors = ['blue', 'cyan', 'blue', 'white'];
         drawemHexagon(200);
         player.stop();
-        playdat.start();
+        playdat.stop();
         rate = 2;
         turn=true;
         freakout=true;
@@ -376,6 +397,8 @@ function checkKey(e) {
          leftTime=false;
          rightTime=true;
          cello.stop();
+         rain.start();
+
 
 
         
