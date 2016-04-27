@@ -769,6 +769,9 @@ intercontext.globalAlpha=0.1;
     var comp = new Tone.Compressor(-30, 3).toMaster();
     keys.connect(comp);
 
+    var limit = new Tone.Limiter(-4);
+    keys.connect(limit).toMaster();
+
     Tone.Transport.start();
     loop.start();
     var pitcho = new Tone.PitchShift().toMaster();
