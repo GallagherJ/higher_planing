@@ -7,7 +7,8 @@
     <script type="text/javascript" src="Tone.js"></script>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="../../dist/paper-full.js"></script>
-    <script type="text/paperscript" canvas="canvas">
+    <script src="interface.js"></script>
+    <script type="text/paperscript" canvas="pcanvas">
 
         var mousePoint = view.center;
         var amount = 25;
@@ -93,6 +94,15 @@ rainvol = -20;
         for (var i = 0; i < amount; i++) {
             var rect = new Rectangle([0, 0], [25, 25]);
             rect.center = mousePoint;
+            var path = new Path.Rectangle(rect, 6);
+            path.fillColor = colors[i % 4];
+            var scale = (1 - i / amount) * 20;
+            path.scale(scale);
+        }
+
+        for (var i = 0; i < amount; i++) {
+            var rect = new Rectangle([200, 100], [25, 25]);
+            rect.center = 500,500;
             var path = new Path.Rectangle(rect, 6);
             path.fillColor = colors[i % 4];
             var scale = (1 - i / amount) * 20;
@@ -479,7 +489,7 @@ for(var i = 0; i < clones; i++) {
 
 var amand = 5;
 var height = 60;
- var canvasLayer = document.getElementById("canvas");
+ var canvasLayer = document.getElementById("pcanvas");
   var context = canvasLayer.getContext('2d');
  /* var blern = new Path.Rectangle({
     point: [0, 0],
@@ -499,7 +509,7 @@ blern.fillColor = '#00000';*/
               
             
                 //context.clearRect(0,0,canvas.width,canvas.height);
-                project.activeLayer.opacity = '0.6';
+                project.activeLayer.opacity = '1';
                 if(turn===true){
                 item.rotate(Math.sin((event.count + i) / 10) * rate);}  
 
@@ -553,6 +563,7 @@ item.fillColor.hue += 3;
             }
                 if (delta.length > 0.1)
                     item.position += delta;
+                  console.log('weeew');
             }
 
 
@@ -569,6 +580,7 @@ item.fillColor.hue += 3;
 }
 
 //Webcam Begin : Overcomplicated bs
+/*
 
 navigator.getUserMedia = (navigator.getUserMedia || 
                           navigator.webkitGetUserMedia || 
@@ -637,26 +649,54 @@ var goingGrey = function() {
    con.putImageData(imageData, 0, 0);
 }
 
+*/
 
+//INTERFACE JS START
+var a = new Interface.Panel({ container:("#multiButtonPanel") });
+var multiButton = new Interface.MultiButton({
+  row:4, columns:8,
+  bounds:[.05,.05,.9,.8],
+  onvaluechange : function(row, col, value) {
+    multiButtonLabel
+    .setValue( 'row : ' + row + ' , col : ' + col + ' , value : ' + value);
+  },
+});
+var multiButtonLabel = new Interface.Label({ 
+  bounds:[.05,.9, .9, .1],
+  hAlign:"left",
+  value:""
+});
+
+a.background = 'black';
+a.add(multiButton, multiButtonLabel);
+
+for(var i = 0; i < multiButton.count; i++) {
+  multiButton._values[i] = Math.random() > .5 ;
+}
+
+/*$(window).resize(function() {
+
+  var cheight= paper.innerHeight; 
+
+$('#multiButtonPanel').css('height', cheight);
+
+});*/
 
     </script>
 </head>
-<body bgcolor="#E6E6FA" id='mybody'>
-   <video id='v' style=' position:absolute;
-   visibility:hidden
-'></video>
-
+<body id='mybody'>
 
 <!--<div id="container">
     <canvas id="canvas" class="canvas" resize hidpi="off"></canvas>
     <canvas id="c" class="canvas" resize hidpi="off"></canvas>
 </div>-->
+<div id='multiButtonPanel' style='height:100%'></div>
 
-<canvas id="canvas" class="canvas" resize hidpi="off"></canvas>
-    <canvas id="c" class="canvas" resize hidpi="off"></canvas>
+<canvas id="pcanvas" class="canvas" resize hidpi="off"></canvas>
+  <!--  <canvas id="c" class="canvas" resize hidpi="off"></canvas>-->
 
    
-    <button id='grey'>Toggle Greyness</button>
+   <!-- <button id='grey'>Toggle Greyness</button> -->
 
    
 

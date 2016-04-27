@@ -4,7 +4,9 @@ body {
     overflow: hidden;
     height: 100%;
 }
-* {cursor: none;}
+/** {cursor: url(cursor.png), auto;}*/
+
+
 
  /*Scale canvas with resize attribute to full size 
 canvas[resize] {
