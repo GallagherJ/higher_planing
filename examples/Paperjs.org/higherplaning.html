@@ -27,7 +27,7 @@
         var freakout = false;
         var clickBlue= false;
         var eyetime=false;
-        var leftime=false;
+        var leftTime=false;
         var downTime=false;         
         var rightTime=false;
         
@@ -110,14 +110,14 @@ rainvol = -80;
             path.scale(scale);
         }
 
-        for (var i = 0; i < amount; i++) {
+      /*  for (var i = 0; i < amount; i++) {
             var rect = new Rectangle([200, 100], [25, 25]);
             rect.center = 500,500;
             var path = new Path.Rectangle(rect, 6);
             path.fillColor = colors[i % 4];
             var scale = (1 - i / amount) * 20;
             path.scale(scale);
-        }
+        }*/
 
  function drawemAgain(amount){
 
@@ -737,33 +737,44 @@ intercontext.globalAlpha=0.1;
 
 
     //setup a polyphonic sampler
-    var keys = new Tone.PolySynth(4, Tone.Sampler, {
-      "A" : "chan1_cut.wav",
-      "C#" : "obscurium_modulatron.wav",
-      "E" : "rain.mp3",
-      "F#" : "cello.mp3",
+    var keys = new Tone.PolySynth(8, Tone.Sampler, {
+      "A" : "cut_samples/cm11.wav",
+      "C#" : "cut_samples/arp.wav",
+      "E" : "cut_samples/g4.wav",
+      "F#" : "cut_samples/c5m.wav",
+      "snare" : "cut_samples/snare.wav",
+      "kick" : "cut_samples/kick.wav",
+      "hat" : "cut_samples/hat.wav",
+      "angel" : "cut_samples/angel.wav",
     }, {
-      "volume" : -20,
+      "volume" : -5,
     }).toMaster();
 
     // var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
 
     //the notes
-    var noteNames = ["F#", "E", "C#", "A"];
+    var noteNames = ["F#", "E", "C#", "A","snare","kick","hat","angel"];
     // var noteNames = ["F#3", "E3", "C#3", "A3"];
 
     var loop = new Tone.Sequence(function(time, col){
       var column = seq.matrix[col];
      // console.log(column);
-      for (var i = 0; i < 4; i++){
+      for (var i = 0; i < 8; i++){
         if (column[i] === 1){
-          keys.triggerAttackRelease(noteNames[i], "16n", time);
+          keys.triggerAttackRelease(noteNames[i], "6n", time);
         }
       }
-    }, [0, 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15], "8n");
+    }, [0, 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15], "16n");
+
+    var comp = new Tone.Compressor(-30, 3);
+    keys.connect(comp);
 
     Tone.Transport.start();
     loop.start();
+    keys.voices[7].pitch=-12;
+    console.log(keys);
+    //keys._freeVoices[0,1,2,3].pitch=-5;
+    //var gainNode = Tone.createGain();
 
   </script>
 
@@ -774,8 +785,9 @@ nx.onload = function(){
       nx.colorize("transparent");
       
       seq.col = 16;
+      seq.row = 8;
       seq.init();
-      seq.resize($("#Content").width(), 250);
+      seq.resize($("#Content").width(), vh);
       seq.draw();
     }
 
