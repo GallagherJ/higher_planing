@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="../css/style.css">
     <script type="text/javascript" src="Tone.js"></script>
     <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="nexusUI.js"></script>
     <script type="text/javascript" src="../../dist/paper-full.js"></script>
     <script src="interface.js"></script>
+    <script type="text/javascript" src="draggabilly.js"></script>
     <script type="text/paperscript" canvas="pcanvas">
 
         var mousePoint = view.center;
@@ -652,7 +654,7 @@ var goingGrey = function() {
 */
 
 //INTERFACE JS START
-var a = new Interface.Panel({ container:("#multiButtonPanel") });
+/*var a = new Interface.Panel({ container:("#multiButtonPanel") });
 
 var multiButton = new Interface.MultiButton({
   row:4, columns:4,
@@ -662,16 +664,17 @@ var multiButton = new Interface.MultiButton({
     .setValue( 'row : ' + row + ' , col : ' + col + ' , value : ' + value);
   },
 });
+
 var multiButtonLabel = new Interface.Label({ 
   bounds:[.05,.9, .9, .1],
   hAlign:"left",
   value:""
 });
 
-a.background = 'black';
+a.background = 'transparent';
 a.add(multiButton, multiButtonLabel);
-//multiButton.background='#FFF333';
-//multibutton.fill:'rgba(0,0,0,0.2)';
+multiButton.background='transparent';
+//multibutton.fill:'transparent';
 
 for(var i = 0; i < multiButton.count; i++) {
   multiButton._values[i] = Math.random() > .5 ;
@@ -683,7 +686,7 @@ for(var i = 0; i < multiButton.count; i++) {
 
 $('#multiButtonPanel').css('height', cheight);
 
-});*/
+});
 
 $( document ).ready(function() {
 var intercanvas = $("#multiButtonPanel").find('canvas');
@@ -693,7 +696,7 @@ intercontext.globalAlpha=0.1;
     
 });
 
-
+*/
 
     </script>
 </head>
@@ -704,8 +707,11 @@ intercontext.globalAlpha=0.1;
     <canvas id="c" class="canvas" resize hidpi="off"></canvas>
 
 </div>-->
-<div id='multiButtonPanel' style='height:100%'></div>
-<canvas id="pcanvas" class="canvas" resize hidpi="off" height='100%'></canvas>
+<canvas nx="matrix" id="seq"></canvas>
+
+<canvas id="pcanvas" class="canvas" resize hidpi="off"></canvas>
+
+<!--<div id='multiButtonPanel' style='height:100%'></div>-->
 
 
   <!--  <canvas id="c" class="canvas" resize hidpi="off"></canvas>-->

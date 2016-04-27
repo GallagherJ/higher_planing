@@ -3,7 +3,7 @@ body {
     margin: 0;
     overflow: hidden;
     height: 100%;
-    background: #FFF000;
+   /* background: #FFF000;*/
 }
 /** {cursor: url(cursor.png), auto;}*/
 
@@ -21,15 +21,17 @@ canvas[resize] {
 
 }
 #pcanvas{
-position:relative;
+position:absolute;
+z-index:-1;
 left:0px;
 top:0px;
 width: 100%;
 height:100%;
 }
 
-#multibuttonpanel{
+#seq{
 position:absolute;
+z-index:2;
 left:0px;
 top:0px;
 width: 100%;
