@@ -38,7 +38,9 @@
 var player = new Tone.Player({
     "url" : "chan1_cut.wav",
     "loop" : true,
-"reverse" : true
+"reverse" : true,
+"volume":-Infinity
+
 }).toMaster();
 
 var playdat = new Tone.Player({
@@ -46,7 +48,9 @@ var playdat = new Tone.Player({
     "loop" : true,
 "reverse" : false,
 "loopStart":0.4,
-"loopEnd":2.4
+"loopEnd":2.4,
+"volume":-Infinity
+
 }).toMaster();
 
 var cello = new Tone.Player({
@@ -55,7 +59,9 @@ var cello = new Tone.Player({
 "reverse" : true,
 "loopStart":0.379,
 "loopEnd":10.39,
-"playbackRate":2
+"playbackRate":2,
+"volume":-Infinity
+
 
 
 }).toMaster();
@@ -66,7 +72,9 @@ var rain = new Tone.Player({
 "reverse" : true,
 "loopStart":0.379,
 "loopEnd":10.39,
-"playbackRate":1
+"playbackRate":1,
+"volume":-Infinity
+
 
 
 }).toMaster();
@@ -77,16 +85,16 @@ var dist = new Tone.PitchShift(0.5,0.1,0,0.6).toMaster();
 
 
 var minus = player.volume.value;
-minus = 1;
+minus = -80;
 
 var playdatvol= playdat.volume.value;
-playdatvol= 1;
+playdatvol= -80;
 
 var cellovol = cello.volume.value;
-cellovol= -20;
+cellovol= -80;
 
 var rainvol =rain.volume.value;
-rainvol = -20;
+rainvol = -80;
 
 /*        var background = new Shape.Rectangle({
     rectangle: view.bounds,
@@ -565,7 +573,7 @@ item.fillColor.hue += 3;
             }
                 if (delta.length > 0.1)
                     item.position += delta;
-                  console.log('weeew');
+                 // console.log('weeew');
             }
 
 
@@ -575,7 +583,8 @@ item.fillColor.hue += 3;
 
 
         Tone.Buffer.onload = function(){
-    player.start();
+
+  //  player.start();
     //playdat.start();
     //cello.start();
     
@@ -723,5 +732,53 @@ intercontext.globalAlpha=0.1;
 
 </body>
 
+<script type="text/javascript">
+//SEQUENCER CODE
+
+
+    //setup a polyphonic sampler
+    var keys = new Tone.PolySynth(4, Tone.Sampler, {
+      "A" : "chan1_cut.wav",
+      "C#" : "obscurium_modulatron.wav",
+      "E" : "rain.mp3",
+      "F#" : "cello.mp3",
+    }, {
+      "volume" : -20,
+    }).toMaster();
+
+    // var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
+
+    //the notes
+    var noteNames = ["F#", "E", "C#", "A"];
+    // var noteNames = ["F#3", "E3", "C#3", "A3"];
+
+    var loop = new Tone.Sequence(function(time, col){
+      var column = seq.matrix[col];
+     // console.log(column);
+      for (var i = 0; i < 4; i++){
+        if (column[i] === 1){
+          keys.triggerAttackRelease(noteNames[i], "16n", time);
+        }
+      }
+    }, [0, 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15], "8n");
+
+    Tone.Transport.start();
+    loop.start();
+
+  </script>
+
+<script type="text/javascript">
+
+//NEXUS SETTINGS(SEQUENCER)
+nx.onload = function(){
+      nx.colorize("transparent");
+      
+      seq.col = 16;
+      seq.init();
+      seq.resize($("#Content").width(), 250);
+      seq.draw();
+    }
+
+</script>
 
 </html>
