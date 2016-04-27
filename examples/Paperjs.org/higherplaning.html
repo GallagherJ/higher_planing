@@ -761,19 +761,60 @@ intercontext.globalAlpha=0.1;
      // console.log(column);
       for (var i = 0; i < 8; i++){
         if (column[i] === 1){
-          keys.triggerAttackRelease(noteNames[i], "6n", time);
+          keys.triggerAttackRelease(noteNames[i], "2n", time);
         }
       }
     }, [0, 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15], "16n");
 
-    var comp = new Tone.Compressor(-30, 3);
+    var comp = new Tone.Compressor(-30, 3).toMaster();
     keys.connect(comp);
 
     Tone.Transport.start();
     loop.start();
-    keys.voices[7].pitch=-12;
-    console.log(keys);
-    //keys._freeVoices[0,1,2,3].pitch=-5;
+    var pitcho = new Tone.PitchShift().toMaster();
+    keys.connect(pitcho);
+
+    var crazydelay = new Tone.PingPongDelay(0,0).toMaster();
+    keys.connect(crazydelay);
+
+    $(document).on('keyup',function(evt) {
+    if (evt.keyCode == 73) {
+       pitcho.pitch= pitcho.pitch+12;
+
+    }
+     if (evt.keyCode == 79) {
+      pitcho.pitch= pitcho.pitch-12;
+    }
+    if (evt.keyCode == 75) {
+      Tone.Transport.bpm.value=Tone.Transport.bpm.value-10;
+    }
+    if (evt.keyCode == 76) {
+      Tone.Transport.bpm.value=Tone.Transport.bpm.value+10;
+    }
+
+    if (evt.keyCode == 77) {
+      crazydelay.delayTime.value=1;
+      crazydelay.maxDelayTime.value=2;
+    }
+
+     if (evt.keyCode == 78) {
+      crazydelay.delayTime.value=0;
+      crazydelay.maxDelayTime.value=0;
+    }
+/*
+     if (evt.keyCode == 78 {
+      crazydelay.delayTime=0;
+      crazydelay.maxDelayTime=0; 
+    }*/
+});
+   /* if (keys.voices[0,1,2,3,4,5,6,7]._sample=='angel'){
+
+      keys.voices[0,1,2,3,4,5,6,7].pitch=-12;
+      keys._freeVoices[0,1,2,3,4,5,6,7].pitch=-12;}
+
+      console.log(keys);
+   
+    //keys._freeVoices[0,1,2,3].pitch=-5;*/
     //var gainNode = Tone.createGain();
 
   </script>
