@@ -739,13 +739,13 @@ intercontext.globalAlpha=0.1;
     //setup a polyphonic sampler
     var keys = new Tone.PolySynth(8, Tone.Sampler, {
       "A" : "cut_samples/cm11.wav",
-      "C#" : "cut_samples/arp.wav",
-      "E" : "cut_samples/g4.wav",
+      "C#" : "cut_samples/gs3.wav",
+      "E" : "cut_samples/as3.wav",
       "F#" : "cut_samples/c5m.wav",
       "snare" : "cut_samples/snare.wav",
       "kick" : "cut_samples/kick.wav",
       "hat" : "cut_samples/hat.wav",
-      "angel" : "cut_samples/angel.wav",
+      "angel" : "cut_samples/arp.wav",
     }, {
       "volume" : -5,
     }).toMaster();
@@ -761,7 +761,7 @@ intercontext.globalAlpha=0.1;
      // console.log(column);
       for (var i = 0; i < 8; i++){
         if (column[i] === 1){
-          keys.triggerAttackRelease(noteNames[i], "2n", time);
+          keys.triggerAttackRelease(noteNames[i], "4n", time);
         }
       }
     }, [0, 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15], "16n");
@@ -769,8 +769,8 @@ intercontext.globalAlpha=0.1;
     var comp = new Tone.Compressor(-30, 3).toMaster();
     keys.connect(comp);
 
-    var limit = new Tone.Limiter(-4);
-    keys.connect(limit).toMaster();
+    //var limit = new Tone.Limiter(-4);
+    //keys.connect(limit).toMaster();
 
     Tone.Transport.start();
     loop.start();
