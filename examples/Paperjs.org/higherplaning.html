@@ -653,8 +653,9 @@ var goingGrey = function() {
 
 //INTERFACE JS START
 var a = new Interface.Panel({ container:("#multiButtonPanel") });
+
 var multiButton = new Interface.MultiButton({
-  row:4, columns:8,
+  row:4, columns:4,
   bounds:[.05,.05,.9,.8],
   onvaluechange : function(row, col, value) {
     multiButtonLabel
@@ -669,6 +670,8 @@ var multiButtonLabel = new Interface.Label({
 
 a.background = 'black';
 a.add(multiButton, multiButtonLabel);
+//multiButton.background='#FFF333';
+//multibutton.fill:'rgba(0,0,0,0.2)';
 
 for(var i = 0; i < multiButton.count; i++) {
   multiButton._values[i] = Math.random() > .5 ;
@@ -682,6 +685,16 @@ $('#multiButtonPanel').css('height', cheight);
 
 });*/
 
+$( document ).ready(function() {
+var intercanvas = $("#multiButtonPanel").find('canvas');
+var interget = intercanvas.get(0);
+var intercontext = interget.getContext("2d");
+intercontext.globalAlpha=0.1;
+    
+});
+
+
+
     </script>
 </head>
 <body id='mybody'>
@@ -689,10 +702,12 @@ $('#multiButtonPanel').css('height', cheight);
 <!--<div id="container">
     <canvas id="canvas" class="canvas" resize hidpi="off"></canvas>
     <canvas id="c" class="canvas" resize hidpi="off"></canvas>
+
 </div>-->
 <div id='multiButtonPanel' style='height:100%'></div>
+<canvas id="pcanvas" class="canvas" resize hidpi="off" height='100%'></canvas>
 
-<canvas id="pcanvas" class="canvas" resize hidpi="off"></canvas>
+
   <!--  <canvas id="c" class="canvas" resize hidpi="off"></canvas>-->
 
    
@@ -701,4 +716,6 @@ $('#multiButtonPanel').css('height', cheight);
    
 
 </body>
+
+
 </html>
